@@ -37,7 +37,22 @@ namespace SubmarineGame
                 textBox1.Text = "Annonym spiller";
             }
 
-            if (File.Exists("scores.dat") )
+            if (!File.Exists("scores.dat"))
+            {
+
+                _score = new AddHighScore() { Score = Form1.Poeng, PlayerName = textBox1.Text };
+                _highScores = new List<AddHighScore>();
+                _highScores.Add(_score);
+
+                using (var fileStream = new FileStream("scores.dat", FileMode.Create, FileAccess.Write))
+                {
+                    var formatter = new BinaryFormatter();
+                    formatter.Serialize(fileStream, _highScores);
+                }
+;
+            }
+
+           if (File.Exists("scores.dat") )
             {
                 using (var fileStream = new FileStream("scores.dat", FileMode.Open, FileAccess.ReadWrite))
                 {
@@ -53,19 +68,11 @@ namespace SubmarineGame
                     formatter.Serialize(fileStream, _highScores);
                 }
 
+                
 
-            }
+           }
             
-
-/*            using (var fileStream = new FileStream("scores.dat", FileMode.Append, FileAccess.Write))
-                {
-                    var formatter = new BinaryFormatter();
-                    formatter.Serialize(fileStream, _highScores);
-                }
-
-            }*/
-
-            
+  
         }
     }
 }
