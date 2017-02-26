@@ -54,8 +54,8 @@ namespace SubmarineGame
 
             _styring = true;
             Poeng = 0;
-            _liv = 5;
-            _nivaa = "Newb";
+            _liv = 1;
+            _nivaa = "Noob";
             _skudd = new PictureBox();
             
             _boat1 = new PictureBox();
@@ -111,7 +111,7 @@ namespace SubmarineGame
             {
                 if (Poeng <= 5)
                 {
-                    _nivaa = Nivaa("Newb");
+                    _nivaa = Nivaa("Noob");
                 }
                 if (Poeng > 5 && Poeng < 10)
                 {
@@ -339,11 +339,11 @@ namespace SubmarineGame
 
         public string Nivaa(string skill)
         {
-            if (skill == "Newb")
+            if (skill == "Noob")
             {
                 Enemy1.Interval = 30;
                 Enemy2.Interval = 20;
-                return "Newb";
+                return "Noob";
             }
             else if (skill == "Normal")
             {
@@ -364,7 +364,7 @@ namespace SubmarineGame
                 Enemy2.Interval = 1;
                 return "Insane";
             }
-            return "Newb";
+            return "Noob";
         }
 
 
