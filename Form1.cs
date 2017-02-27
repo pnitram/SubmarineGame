@@ -274,7 +274,7 @@ namespace SubmarineGame
 #endif
             if (_plane.Location.X >= 900)
             {
-                _plane.Left = new Random().Next(-900, -300);
+                _plane.Left = new Random().Next(1500, -300);
             }
 
             if (_plane.Location.X >= 1500)
