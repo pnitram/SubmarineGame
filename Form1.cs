@@ -66,23 +66,22 @@ namespace SubmarineGame
             _skudd = new PictureBox();
             
             _boat1 = new PictureBox();
-            _boat1.SetBounds(0, 25, 132, 100);
+            _boat1.SetBounds(0, 25, 127, 83);
             _boat1.Image = Properties.Resources.boat1;
             _boat1.BackColor = Color.Transparent;
             _boat1.Left = x;
             Controls.Add(_boat1);
 
             _boat2 = new PictureBox();
-            _boat2.SetBounds(0, 600, 68, 70);
+            _boat2.SetBounds(0, 600, 38, 37);
             _boat2.Image = Properties.Resources.boat2;
             _boat2.BackColor = Color.Transparent;
             _boat2.Left = x2;
             Controls.Add(_boat2);
 
             _plane = new PictureBox();
-            _plane.SetBounds(0,100, 100, 92);
+            _plane.SetBounds(0,100, 93, 51);
             _plane.Image = Properties.Resources.plane;
-            _plane.SizeMode = PictureBoxSizeMode.StretchImage;
             _plane.BackColor = Color.Transparent;
             _plane.Left = -1000;
             Controls.Add(_plane);
@@ -90,7 +89,7 @@ namespace SubmarineGame
             _player = new PictureBox();
             _player.Image = Properties.Resources.sub;
             _player.BackColor = Color.Transparent;
-            _player.SetBounds(350, 525, 90, 50);
+            _player.SetBounds(350, 525, 93, 51);
             Controls.Add(_player);
                       
 
@@ -101,7 +100,7 @@ namespace SubmarineGame
        
             _skudd.Image = Properties.Resources.torpedo;
             _skudd.BackColor = Color.Transparent;
-            _skudd.SetBounds(_player.Location.X + 28, 540, 20, 20);
+            _skudd.SetBounds(_player.Location.X + 28, 540, 9, 20);
             Controls.Add(_skudd);
             
         }
@@ -228,7 +227,7 @@ namespace SubmarineGame
 
         private void EnemyTimer2Tick(object sender, EventArgs e)
         {
-                _boat2.Top = 280;
+                _boat2.Top = 290;
                 _boat2.Left -= _boat2Speed;
 
        
@@ -329,14 +328,14 @@ namespace SubmarineGame
             {
                 if (e.KeyCode == Keys.Left)
                 {
-                    _player.Left -= 5;
+                    _player.Left -= 10;
                     //skudd.Left -= 5;
 #if Debug
                     Console.WriteLine(_player.Left);
 #endif
                     if (_player.Left <= 0)
                     {
-                        _player.Left = 5;
+                        _player.Left = 10;
                         //skudd.Left = 25;
 #if Debug
                         Console.WriteLine("Player: " + _player.Left);
@@ -353,7 +352,7 @@ namespace SubmarineGame
                 }
                 else if (e.KeyCode == Keys.Right)
                 {
-                    _player.Left += 5;
+                    _player.Left += 10;
                     //skudd.Left += 5;
 #if Debug
                     Console.WriteLine("Player: " + _player.Left);
@@ -361,7 +360,7 @@ namespace SubmarineGame
 
                     if (_player.Left <= 0)
                     {
-                        _player.Left = 5;
+                        _player.Left = 10;
                         //skudd.Left = 10;
 #if Debug
                         Console.WriteLine("Player: " + _player.Left);

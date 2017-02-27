@@ -69,12 +69,12 @@ namespace SubmarineGame
 
                     if (++_count <= 5)
                     {
-                        _stringBuilder1.Append("\n" + score.PlayerName + ": " + score.Score + " poeng" + "\n");
+                        _stringBuilder1.Append("\n" + _count +": "+ score.PlayerName + ", " + score.Score + " poeng" + "\n");
                     }
 
                     else
                     {
-                        _stringBuilder2.Append("\n" + score.PlayerName + ": " + score.Score + " poeng" + "\n");
+                        _stringBuilder2.Append("\n" + _count + ": " + score.PlayerName + ", " + score.Score + " poeng" + "\n");
                     }
                 }
                 //Omgjør objektene til strenger
