@@ -38,6 +38,7 @@
             this.Enemy2 = new System.Windows.Forms.Timer(this.components);
             this.playerTimer = new System.Windows.Forms.Timer(this.components);
             this.skuddTimer = new System.Windows.Forms.Timer(this.components);
+            this.planeTimer = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -106,6 +107,12 @@
             this.skuddTimer.Interval = 20;
             this.skuddTimer.Tick += new System.EventHandler(this.skuddTimer_Tick);
             // 
+            // planeTimer
+            // 
+            this.planeTimer.Enabled = true;
+            this.planeTimer.Interval = 20;
+            this.planeTimer.Tick += new System.EventHandler(this.planeTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -141,6 +148,7 @@
         private System.Windows.Forms.Timer Enemy2;
         private System.Windows.Forms.Timer playerTimer;
         private System.Windows.Forms.Timer skuddTimer;
+        private System.Windows.Forms.Timer planeTimer;
     }
 }
 

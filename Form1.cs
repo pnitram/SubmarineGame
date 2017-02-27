@@ -32,6 +32,7 @@ namespace SubmarineGame
         private bool _styring;
         private int _boat1Speed;
         private int _boat2Speed;
+        private int _planeSpeed;
 
 
         public Form1()
@@ -57,10 +58,11 @@ namespace SubmarineGame
 
             _styring = true;
             Poeng = 0;
-            _liv = 2;
+            _liv = 3;
             _nivaa = "Noob";
             _boat1Speed = 5;
             _boat2Speed = 7;
+            _planeSpeed = 20;
             _skudd = new PictureBox();
             
             _boat1 = new PictureBox();
@@ -71,11 +73,19 @@ namespace SubmarineGame
             Controls.Add(_boat1);
 
             _boat2 = new PictureBox();
-            _boat2.SetBounds(800, 600, 68, 70);
+            _boat2.SetBounds(0, 600, 68, 70);
             _boat2.Image = Properties.Resources.boat2;
             _boat2.BackColor = Color.Transparent;
             _boat2.Left = x2;
             Controls.Add(_boat2);
+
+            _plane = new PictureBox();
+            _plane.SetBounds(0,100, 100, 92);
+            _plane.Image = Properties.Resources.plane;
+            _plane.SizeMode = PictureBoxSizeMode.StretchImage;
+            _plane.BackColor = Color.Transparent;
+            _plane.Left = -1000;
+            Controls.Add(_plane);
 
             _player = new PictureBox();
             _player.Image = Properties.Resources.sub;
@@ -181,6 +191,7 @@ namespace SubmarineGame
                     _boat1.Dispose();
                     _boat2.Dispose();
                     _player.Dispose();
+                    _plane.Dispose();
                     Form GameOverForm = new GameOverForm();
                     GameOverForm.ShowDialog();
                 }
@@ -249,6 +260,51 @@ namespace SubmarineGame
             Console.WriteLine("boat2 X: " + _boat2.Location.X);
             Console.WriteLine("boat2 Y: " + _boat2.Location.Y);
             Console.WriteLine("Skudd y: " + _skudd.Location.Y);
+#endif
+            Refresh();
+        }
+
+
+        private void planeTimer_Tick(object sender, EventArgs e)
+        {
+            _plane.Top = 100;
+            _plane.Left += _planeSpeed;
+#if Debug
+            Console.WriteLine("Plane X: " + _plane.Location.X);
+#endif
+            if (_plane.Location.X >= 900)
+            {
+                _plane.Left = new Random().Next(-900, -300);
+            }
+
+            if (_plane.Location.X >= 1500)
+            {
+                _plane.Left = 800;
+            }
+            
+            if (!_skudd.Bounds.IntersectsWith(_plane.Bounds))
+            {
+                if (_skudd.Location.Y <= -200)
+                {
+
+                    _styring = true;
+
+                    _skudd.SetBounds(_player.Location.X + 28, -350, 20, 20);
+
+                }
+            }
+            else
+            {
+                _plane.Left = -1500;
+                _skudd.Location = new Point(_skudd.Location.X, -150);
+                _styring = true;
+                Poeng += 5;
+
+                EndreNivaa();
+            }
+#if Debug
+            Console.WriteLine("boat1 X: " + _boat1.Location.X);
+            Console.WriteLine("boat1 Y: " + _boat1.Location.Y);
 #endif
             Refresh();
         }
@@ -345,6 +401,7 @@ namespace SubmarineGame
                                 Enemy2.Interval = 15;*/
                 _boat1Speed += 3;
                 _boat2Speed += 5;
+                _planeSpeed += 5;
                 return "Normal";
             }
 
@@ -354,6 +411,7 @@ namespace SubmarineGame
                                 Enemy2.Interval = 10;*/
                 _boat1Speed += 5;
                 _boat2Speed += 7;
+                _planeSpeed += 7;
                 return "Ekspert";
             }
             else if (skill == "Insane")
@@ -362,6 +420,7 @@ namespace SubmarineGame
                                 Enemy2.Interval = 1;*/
                 _boat1Speed += 5;
                 _boat2Speed += 7;
+                _planeSpeed += 7;
                 return "Insane";
             }
             return "Noob";
@@ -394,5 +453,7 @@ namespace SubmarineGame
             this.Refresh();
 #endif
         }
+
+        
     }
 }
