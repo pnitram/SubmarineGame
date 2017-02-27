@@ -67,6 +67,7 @@
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
             this.newGameToolStripMenuItem.Size = new System.Drawing.Size(279, 46);
             this.newGameToolStripMenuItem.Text = "New Game";
+            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
             // highscoreToolStripMenuItem
             // 
@@ -85,7 +86,7 @@
             // Enemy1
             // 
             this.Enemy1.Enabled = true;
-            this.Enemy1.Interval = 30;
+            this.Enemy1.Interval = 20;
             this.Enemy1.Tick += new System.EventHandler(this.EnemyTimer1Tick);
             // 
             // Enemy2
@@ -96,13 +97,13 @@
             // 
             // playerTimer
             // 
-            this.playerTimer.Interval = 1;
+            this.playerTimer.Interval = 20;
             this.playerTimer.Tick += new System.EventHandler(this.playerTimer_Tick);
             // 
             // skuddTimer
             // 
             this.skuddTimer.Enabled = true;
-            this.skuddTimer.Interval = 1;
+            this.skuddTimer.Interval = 20;
             this.skuddTimer.Tick += new System.EventHandler(this.skuddTimer_Tick);
             // 
             // Form1
@@ -121,6 +122,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form1_Paint);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseMove);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);

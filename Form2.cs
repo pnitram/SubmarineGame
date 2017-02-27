@@ -34,8 +34,9 @@ namespace SubmarineGame
         {
             if (string.IsNullOrEmpty(textBox1.Text))
             {
-                textBox1.Text = "Annonym spiller";
+                textBox1.Text = "Annonymous player";
             }
+
 
             if (!File.Exists("scores.dat"))
             {
@@ -46,7 +47,7 @@ namespace SubmarineGame
 
                 using (var fileStream = new FileStream("scores.dat", FileMode.Create, FileAccess.Write))
                 {
-                    var formatter = new BinaryFormatter();
+                    BinaryFormatter formatter = new BinaryFormatter();
                     formatter.Serialize(fileStream, _highScores);
                 }
 ;
@@ -67,12 +68,12 @@ namespace SubmarineGame
                     var formatter = new BinaryFormatter();
                     formatter.Serialize(fileStream, _highScores);
                 }
+                this.Hide();
+                Form HighScore = new HighScore();
+                HighScore.ShowDialog();
 
-                
-
-           }
+            }
             
-  
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿#define Debug
+﻿
+//Kommenter ut linjen under for å slå av debug 
+#define Debug
 
 using System;
 using System.Drawing;
@@ -16,7 +18,6 @@ namespace SubmarineGame
 
 #endif
         
-        
         private PictureBox _boat1;
         private PictureBox _boat2;
         private PictureBox _boat3;
@@ -29,7 +30,10 @@ namespace SubmarineGame
         private string _nivaa;
         private int _liv;
         private bool _styring;
-        
+        private int _boat1Speed;
+        private int _boat2Speed;
+
+
         public Form1()
         {
             InitializeComponent();
@@ -47,15 +51,16 @@ namespace SubmarineGame
 
         private void Oppsett()
         {
-            int x = _random.Next(0, 800);
-            int y = _random.Next(0, 800);
-            int x2 = _random.Next(0, 800);
-            int y2 = _random.Next(0, 800);
+            int x = _random.Next(-200, -10);
+            int x2 = _random.Next(800, 1200);
+
 
             _styring = true;
             Poeng = 0;
-            _liv = 1;
+            _liv = 2;
             _nivaa = "Noob";
+            _boat1Speed = 5;
+            _boat2Speed = 7;
             _skudd = new PictureBox();
             
             _boat1 = new PictureBox();
@@ -77,8 +82,7 @@ namespace SubmarineGame
             _player.BackColor = Color.Transparent;
             _player.SetBounds(350, 525, 90, 50);
             Controls.Add(_player);
-
-          
+                      
 
         }
 
@@ -106,7 +110,7 @@ namespace SubmarineGame
         
         void EndreNivaa()
         {
-            if (_nivaa == "Newb")
+            if (_nivaa == "Noob")
 
             {
                 if (Poeng <= 5)
@@ -158,11 +162,11 @@ namespace SubmarineGame
         private void EnemyTimer1Tick(object sender, EventArgs e)
         {
             _boat1.Top = 350;
-            _boat1.Left += 5;
+            _boat1.Left += _boat1Speed;
 
             if (_boat1.Location.X >= 900)
             {
-                _boat1.Left = -100;
+                _boat1.Left = new Random().Next(-900,-300);
             }
 
             if (_boat1.Location.X >= 1500)
@@ -214,12 +218,12 @@ namespace SubmarineGame
         private void EnemyTimer2Tick(object sender, EventArgs e)
         {
                 _boat2.Top = 280;
-                _boat2.Left -= 5;
+                _boat2.Left -= _boat2Speed;
 
        
             if (_boat2.Location.X <= -100)
             {
-                _boat2.Left = 900;
+                _boat2.Left = new Random().Next(900,1300);
             }
 
             if (!_skudd.Bounds.IntersectsWith(_boat2.Bounds))
@@ -227,10 +231,8 @@ namespace SubmarineGame
                 
                 if (_skudd.Location.Y <= -200)
                 {
-                   
-                    _styring = true;
-                    _skudd.SetBounds(_player.Location.X + 28, -350, 20, 20);
-
+                   _styring = true;
+                   _skudd.SetBounds(_player.Location.X + 28, -350, 20, 20);
                 }
             }
             
@@ -260,7 +262,7 @@ namespace SubmarineGame
         {
             _styring = false;
 
-            _skudd.Location = new Point(_skudd.Location.X, _skudd.Location.Y - 10);
+            _skudd.Location = new Point(_skudd.Location.X, _skudd.Location.Y - 20);
          
         }
 
@@ -309,9 +311,9 @@ namespace SubmarineGame
                         Console.WriteLine("Player: " + _player.Left);
 #endif
                     }
-                    else if (_player.Left >= 750)
+                    else if (_player.Left >= 720)
                     {
-                        _player.Left = 745;
+                        _player.Left = 715;
                         //skudd.Left = 765;
 #if Debug
                         Console.WriteLine("Player: " + _player.Left);
@@ -328,40 +330,38 @@ namespace SubmarineGame
             
         }
 
-        private void panel1_MouseMove(object sender, MouseEventArgs e)
-        {
-#if Debug
-            _cursX = e.X;
-            _cursY = e.Y;
-            this.Refresh();
-#endif
-        }
 
         public string Nivaa(string skill)
         {
             if (skill == "Noob")
             {
-                Enemy1.Interval = 30;
-                Enemy2.Interval = 20;
+/*                Enemy1.Interval = 30;
+                Enemy2.Interval = 20;*/
                 return "Noob";
             }
             else if (skill == "Normal")
             {
-                Enemy1.Interval = 25;
-                Enemy2.Interval = 15;
+                /*                Enemy1.Interval = 25;
+                                Enemy2.Interval = 15;*/
+                _boat1Speed += 3;
+                _boat2Speed += 5;
                 return "Normal";
             }
 
             else if (skill == "Ekspert")
             {
-                Enemy1.Interval = 20;
-                Enemy2.Interval = 10;
+                /*                Enemy1.Interval = 20;
+                                Enemy2.Interval = 10;*/
+                _boat1Speed += 5;
+                _boat2Speed += 7;
                 return "Ekspert";
             }
             else if (skill == "Insane")
             {
-                Enemy1.Interval = 1;
-                Enemy2.Interval = 1;
+                /*                Enemy1.Interval = 1;
+                                Enemy2.Interval = 1;*/
+                _boat1Speed += 5;
+                _boat2Speed += 7;
                 return "Insane";
             }
             return "Noob";
@@ -379,8 +379,20 @@ namespace SubmarineGame
             TextRenderer.DrawText(dc, "X=" + _cursX.ToString() + ":" + "Y=" + _cursY.ToString() + "\nSkudd X: " + _skudd.Location.X + "\nSkudd Y: " + _skudd.Location.Y, font, new Rectangle(150, 45, 200, 100), SystemColors.ControlText, flags);
            
 #endif
-            
+        }
+
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Restart();
+        }
+
+        private void Form1_MouseMove(object sender, MouseEventArgs e)
+        {
+#if Debug
+            _cursX = e.X;
+            _cursY = e.Y;
+            this.Refresh();
+#endif
         }
     }
-
-        }
+}
