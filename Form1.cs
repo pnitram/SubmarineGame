@@ -1,6 +1,6 @@
 ﻿
 //Kommenter ut linjen under for å slå av debug 
-#define Debug
+//#define Debug
 
 using System;
 using System.Drawing;
@@ -127,7 +127,7 @@ namespace SubmarineGame
                 {
                     _nivaa = Nivaa("Noob");
                 }
-                if (Poeng > 5 && Poeng < 10)
+                if (Poeng > 5)
                 {
                     _nivaa = Nivaa("Normal");
                 }
@@ -274,7 +274,7 @@ namespace SubmarineGame
 #endif
             if (_plane.Location.X >= 900)
             {
-                _plane.Left = new Random().Next(1500, -300);
+                _plane.Left = new Random().Next(-1500, -300);
             }
 
             if (_plane.Location.X >= 1500)
@@ -399,9 +399,9 @@ namespace SubmarineGame
             {
                 /*                Enemy1.Interval = 25;
                                 Enemy2.Interval = 15;*/
-                _boat1Speed += 3;
-                _boat2Speed += 5;
-                _planeSpeed += 5;
+                _boat1Speed += 2;
+                _boat2Speed += 4;
+                _planeSpeed += 4;
                 return "Normal";
             }
 
@@ -409,9 +409,9 @@ namespace SubmarineGame
             {
                 /*                Enemy1.Interval = 20;
                                 Enemy2.Interval = 10;*/
-                _boat1Speed += 5;
-                _boat2Speed += 7;
-                _planeSpeed += 7;
+                _boat1Speed += 3;
+                _boat2Speed += 5;
+                _planeSpeed += 5;
                 return "Ekspert";
             }
             else if (skill == "Insane")
