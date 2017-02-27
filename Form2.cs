@@ -50,10 +50,10 @@ namespace SubmarineGame
                     BinaryFormatter formatter = new BinaryFormatter();
                     formatter.Serialize(fileStream, _highScores);
                 }
-;
+
             }
 
-           if (File.Exists("scores.dat") )
+           else
             {
                 using (var fileStream = new FileStream("scores.dat", FileMode.Open, FileAccess.ReadWrite))
                 {
@@ -68,12 +68,14 @@ namespace SubmarineGame
                     var formatter = new BinaryFormatter();
                     formatter.Serialize(fileStream, _highScores);
                 }
-                this.Hide();
-                Form HighScore = new HighScore();
-                HighScore.ShowDialog();
+
 
             }
-            
+
+            this.Hide();
+            Form HighScore = new HighScore();
+            HighScore.ShowDialog();
+
         }
     }
 }

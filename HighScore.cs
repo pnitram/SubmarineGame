@@ -29,7 +29,9 @@ namespace SubmarineGame
         {
             InitializeComponent();
 
-            //Deserialiserer highscore liste objektet fra fil for å hente tilbake lagrede highscores
+            try
+            {
+                            //Deserialiserer highscore liste objektet fra fil for å hente tilbake lagrede highscores
             using (var fileStream = new FileStream("scores.dat", FileMode.Open, FileAccess.Read))
             {
                 var formatter = new BinaryFormatter();
@@ -37,8 +39,21 @@ namespace SubmarineGame
             }
             //sorterer higscores
            _highScores.Sort();
-
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+               
+            }
+
+          
+
+
+        }
+
+
+
+        
 
         private void HighScore_Paint(object sender, PaintEventArgs e)
         {
@@ -46,32 +61,41 @@ namespace SubmarineGame
             _stringBuilder2 = new StringBuilder();
             _count = 0;
 
-            //Bygger to stringbuider objekter
-            foreach (AddHighScore score in _highScores.Take(10))
+            try
             {
-                
-                if (++_count <= 5)
+                //Bygger to stringbuider objekter
+                foreach (AddHighScore score in _highScores.Take(10))
                 {
-                    _stringBuilder1.Append("\n" + score.PlayerName + ": " + score.Score + " poeng" + "\n");
-                }
 
-                else
-                {
-                    _stringBuilder2.Append("\n" + score.PlayerName + ": " + score.Score + " poeng" + "\n");
+                    if (++_count <= 5)
+                    {
+                        _stringBuilder1.Append("\n" + score.PlayerName + ": " + score.Score + " poeng" + "\n");
+                    }
+
+                    else
+                    {
+                        _stringBuilder2.Append("\n" + score.PlayerName + ": " + score.Score + " poeng" + "\n");
+                    }
                 }
+                //Omgjør objektene til strenger
+                _scoresString1 = _stringBuilder1.ToString();
+                _scoresString2 = _stringBuilder2.ToString();
+
+                Graphics dc = e.Graphics;
+
+                TextFormatFlags flags = TextFormatFlags.Left | TextFormatFlags.NoPadding;
+                Font font = new Font("Stencil", 12, FontStyle.Regular);
+
+                //Tegner/viser to kolloner med highscore
+                TextRenderer.DrawText(dc, _scoresString1, font, new Rectangle(100, 60, 700, 350), SystemColors.ControlText, flags);
+                TextRenderer.DrawText(dc, _scoresString2, font, new Rectangle(300, 60, 700, 350), SystemColors.ControlText, flags);
             }
-            //Omgjør objektene til strenger
-            _scoresString1 = _stringBuilder1.ToString();
-            _scoresString2 = _stringBuilder2.ToString();
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+            }
 
-            Graphics dc = e.Graphics;
-
-            TextFormatFlags flags = TextFormatFlags.Left | TextFormatFlags.NoPadding;
-            Font font = new Font("Stencil", 12, FontStyle.Regular);
-
-            //Tegner/viser to kolloner med highscore
-            TextRenderer.DrawText(dc, _scoresString1, font, new Rectangle(100, 60, 700, 350), SystemColors.ControlText, flags);
-            TextRenderer.DrawText(dc, _scoresString2, font, new Rectangle(300, 60, 700, 350), SystemColors.ControlText, flags);
+            
 
         }
 
