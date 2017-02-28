@@ -11,8 +11,8 @@ namespace SubmarineGame
 {
     public partial class HighScoreForm : Form
     {
-        private int _count;
         private readonly List<AddHighScore> _highScores;
+        private int _count;
         private string _scoresString1;
         private string _scoresString2;
         private StringBuilder _stringBuilder1;
@@ -25,17 +25,18 @@ namespace SubmarineGame
 
             try
             {
-                //Deserialiserer highscore liste objektet fra fil for å hente tilbake lagrede highscores
+                //Deserialize highscore list object --> gets the stored hiscore list from binary file
                 using (var fileStream = new FileStream("scores.dat", FileMode.Open, FileAccess.Read))
                 {
                     var formatter = new BinaryFormatter();
                     _highScores = (List<AddHighScore>) formatter.Deserialize(fileStream);
                 }
-                //sorterer higscores
+                //sorts the higscores
                 _highScores.Sort();
             }
             catch (Exception e)
             {
+                //Writes error code to console if no highscore file
                 Console.WriteLine(e);
             }
         }
@@ -49,25 +50,24 @@ namespace SubmarineGame
 
             try
             {
-                //Bygger to stringbuider objekter
+                //Builds two stringbuider objects each containing five highscores 
                 foreach (var score in _highScores.Take(10))
                     if (++_count <= 5)
-                        _stringBuilder1.Append("\n" + _count + ": " + score.PlayerName + ", " + score.Score + " poeng" +
+                        _stringBuilder1.Append("\n" + _count + ": " + score.PlayerName + ", " + score.Score + " points" +
                                                "\n");
 
                     else
-                        _stringBuilder2.Append("\n" + _count + ": " + score.PlayerName + ", " + score.Score + " poeng" +
+                        _stringBuilder2.Append("\n" + _count + ": " + score.PlayerName + ", " + score.Score + " points" +
                                                "\n");
-                //Omgjør objektene til strenger
+                //Stringbuilder objects ->  string objects
                 _scoresString1 = _stringBuilder1.ToString();
                 _scoresString2 = _stringBuilder2.ToString();
 
                 var dc = e.Graphics;
-
                 var flags = TextFormatFlags.Left | TextFormatFlags.NoPadding;
                 var font = new Font("Stencil", 12, FontStyle.Regular);
 
-                //Tegner/viser to kolloner med highscore
+                //Renders two highscore colums
                 TextRenderer.DrawText(dc, _scoresString1, font, new Rectangle(100, 60, 700, 350),
                     SystemColors.ControlText, flags);
                 TextRenderer.DrawText(dc, _scoresString2, font, new Rectangle(300, 60, 700, 350),
@@ -79,13 +79,13 @@ namespace SubmarineGame
             }
         }
 
-        //Knapp for å starte applikasjon på nytt
+        //Button to restart the application
         private void button1_Click(object sender, EventArgs e)
         {
             Application.Restart();
         }
 
-        //Knapp for å avslutte applikasjon
+        //Button to close the application
         private void button2_Click(object sender, EventArgs e)
         {
             Application.Exit();

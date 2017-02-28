@@ -40,9 +40,9 @@
             this.Label1.ForeColor = System.Drawing.Color.Red;
             this.Label1.Location = new System.Drawing.Point(584, 61);
             this.Label1.Name = "Label1";
-            this.Label1.Size = new System.Drawing.Size(386, 78);
+            this.Label1.Size = new System.Drawing.Size(533, 78);
             this.Label1.TabIndex = 0;
-            this.Label1.Text = "HighScores";
+            this.Label1.Text = "Top Ten Players";
             // 
             // button1
             // 
@@ -73,7 +73,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Label1);
             this.Name = "HighScoreForm";
-            this.Text = "HighScoreForm";
+            this.Text = "Top Ten Players";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.HighScore_Paint);
             this.ResumeLayout(false);
             this.PerformLayout();

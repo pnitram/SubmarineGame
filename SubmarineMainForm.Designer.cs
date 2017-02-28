@@ -33,13 +33,12 @@
             this.hovedmenyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.highscoreToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.musicOnOffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Enemy1 = new System.Windows.Forms.Timer(this.components);
             this.Enemy2 = new System.Windows.Forms.Timer(this.components);
-            this.playerTimer = new System.Windows.Forms.Timer(this.components);
             this.skuddTimer = new System.Windows.Forms.Timer(this.components);
             this.planeTimer = new System.Windows.Forms.Timer(this.components);
-            this.musicOnOffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -62,29 +61,36 @@
             this.musicOnOffToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.hovedmenyToolStripMenuItem.Name = "hovedmenyToolStripMenuItem";
-            this.hovedmenyToolStripMenuItem.Size = new System.Drawing.Size(191, 45);
-            this.hovedmenyToolStripMenuItem.Text = "Hovedmeny";
+            this.hovedmenyToolStripMenuItem.Size = new System.Drawing.Size(107, 45);
+            this.hovedmenyToolStripMenuItem.Text = "Menu";
             // 
             // newGameToolStripMenuItem
             // 
             this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
             this.newGameToolStripMenuItem.Size = new System.Drawing.Size(327, 46);
             this.newGameToolStripMenuItem.Text = "New Game";
-            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
+            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.NewGameToolStripMenuItem_Click);
             // 
             // highscoreToolStripMenuItem
             // 
             this.highscoreToolStripMenuItem.Name = "highscoreToolStripMenuItem";
             this.highscoreToolStripMenuItem.Size = new System.Drawing.Size(327, 46);
             this.highscoreToolStripMenuItem.Text = "Highscore";
-            this.highscoreToolStripMenuItem.Click += new System.EventHandler(this.highscordMenuItem1_Click);
+            this.highscoreToolStripMenuItem.Click += new System.EventHandler(this.HighscordMenuItem1_Click);
+            // 
+            // musicOnOffToolStripMenuItem
+            // 
+            this.musicOnOffToolStripMenuItem.Name = "musicOnOffToolStripMenuItem";
+            this.musicOnOffToolStripMenuItem.Size = new System.Drawing.Size(327, 46);
+            this.musicOnOffToolStripMenuItem.Text = "Music On/Off";
+            this.musicOnOffToolStripMenuItem.Click += new System.EventHandler(this.MusicOnOffToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(327, 46);
             this.exitToolStripMenuItem.Text = "Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitMenuItem1_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitMenuItem1_Click);
             // 
             // Enemy1
             // 
@@ -98,11 +104,6 @@
             this.Enemy2.Interval = 20;
             this.Enemy2.Tick += new System.EventHandler(this.EnemyTimer2Tick);
             // 
-            // playerTimer
-            // 
-            this.playerTimer.Interval = 20;
-            this.playerTimer.Tick += new System.EventHandler(this.playerTimer_Tick);
-            // 
             // skuddTimer
             // 
             this.skuddTimer.Enabled = true;
@@ -114,13 +115,6 @@
             this.planeTimer.Enabled = true;
             this.planeTimer.Interval = 20;
             this.planeTimer.Tick += new System.EventHandler(this.planeTimer_Tick);
-            // 
-            // musicOnOffToolStripMenuItem
-            // 
-            this.musicOnOffToolStripMenuItem.Name = "musicOnOffToolStripMenuItem";
-            this.musicOnOffToolStripMenuItem.Size = new System.Drawing.Size(327, 46);
-            this.musicOnOffToolStripMenuItem.Text = "Music On/Off";
-            this.musicOnOffToolStripMenuItem.Click += new System.EventHandler(this.musicOnOffToolStripMenuItem_Click);
             // 
             // SubmarineMainForm
             // 
@@ -155,7 +149,6 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.Timer Enemy1;
         private System.Windows.Forms.Timer Enemy2;
-        private System.Windows.Forms.Timer playerTimer;
         private System.Windows.Forms.Timer skuddTimer;
         private System.Windows.Forms.Timer planeTimer;
         private System.Windows.Forms.ToolStripMenuItem musicOnOffToolStripMenuItem;

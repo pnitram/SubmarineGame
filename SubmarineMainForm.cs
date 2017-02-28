@@ -1,5 +1,4 @@
-﻿//Kommenter ut linjen under for å slå av debug 
-
+﻿//Remove comment to start debug
 //#define Debug
 
 using System;
@@ -12,22 +11,30 @@ namespace SubmarineGame
 {
     public partial class SubmarineMainForm : Form
     {
-        public static int Poeng;
+        //Fields
+
+        private int _points;
         private PictureBox _boat1;
         private int _boat1Speed;
         private PictureBox _boat2;
         private int _boat2Speed;
-        private int _liv;
-        private string _nivaa;
+        private int _life;
+        private string _level;
         private PictureBox _plane;
         private int _planeSpeed;
         private PictureBox _player;
         private Random _random;
-        private PictureBox _skudd;
-        private bool _styring;
-        private SoundPlayer sp;
-        private int _mOffOnCount;
+        private PictureBox _torpedo;
+        private bool _controlOnOff;
+        private SoundPlayer _soundPlayer;
+        private int _musicOnOffCount;
 
+#if Debug
+
+        private int _cursX;
+        private int _cursY;
+
+#endif
 
         public SubmarineMainForm()
         {
@@ -37,6 +44,7 @@ namespace SubmarineGame
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            //Set main window size and sizing lock controls
             _random = new Random();
             var s = new Size(800, 600);
             ClientSize = s;
@@ -47,19 +55,21 @@ namespace SubmarineGame
 
         private void Oppsett()
         {
+            //Random values for boat startpos 
             var x = _random.Next(-200, -10);
             var x2 = _random.Next(800, 1200);
 
-
-            _styring = true;
-            Poeng = 0;
-            _liv = 3;
-            _nivaa = "Noob";
+            //Initial values
+            _controlOnOff = true;
+            _points = 0;
+            _life = 3;
+            _level = "Noob";
             _boat1Speed = 5;
             _boat2Speed = 7;
             _planeSpeed = 20;
-            _skudd = new PictureBox();
+            _torpedo = new PictureBox();
 
+            //Boat 1 object
             _boat1 = new PictureBox();
             _boat1.SetBounds(0, 25, 127, 83);
             _boat1.Image = Resources.boat1;
@@ -67,6 +77,7 @@ namespace SubmarineGame
             _boat1.Left = x;
             Controls.Add(_boat1);
 
+            //Boat 2 object
             _boat2 = new PictureBox();
             _boat2.SetBounds(0, 600, 38, 37);
             _boat2.Image = Resources.boat2;
@@ -74,6 +85,7 @@ namespace SubmarineGame
             _boat2.Left = x2;
             Controls.Add(_boat2);
 
+            //Plane object
             _plane = new PictureBox();
             _plane.SetBounds(0, 100, 93, 51);
             _plane.Image = Resources.plane;
@@ -81,119 +93,161 @@ namespace SubmarineGame
             _plane.Left = -1000;
             Controls.Add(_plane);
 
+            //Player/submarine oibject
             _player = new PictureBox();
             _player.Image = Resources.sub;
             _player.BackColor = Color.Transparent;
             _player.SetBounds(350, 525, 93, 51);
             Controls.Add(_player);
 
-            _skudd.SetBounds(_player.Location.X + 28, -350, 9, 20);
+            //Startpos of torpedo/shoot
+            _torpedo.SetBounds(_player.Location.X + 28, -350, 9, 20);
 
+            //Start music loop
             PlayBkMusic();
         }
 
-        private void PlayBkMusic()
+        private void ChangeLevel()
         {
-            sp = new SoundPlayer(Resources.bkMusic);
-            sp.PlayLooping();
-        }
+            //Change level method
 
-
-        private void NyttSkudd()
-        {
-            _skudd.Image = Resources.torpedo;
-            _skudd.BackColor = Color.Transparent;
-            _skudd.SetBounds(_player.Location.X + 28, 540, 9, 20);
-            Controls.Add(_skudd);
-        }
-
-        private void exitMenuItem1_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void highscordMenuItem1_Click(object sender, EventArgs e)
-        {
-            Form highScore = new HighScoreForm();
-            highScore.ShowDialog();
-        }
-
-
-        private void EndreNivaa()
-        {
-            if (_nivaa == "Noob")
+            if (_level == "Noob")
 
             {
-                if (Poeng <= 5)
-                    _nivaa = Nivaa("Noob");
-                if (Poeng > 5)
-                    _nivaa = Nivaa("Normal");
+                if (_points <= 5)
+                    _level = Level("Noob");
+                if (_points > 5)
+                    _level = Level("Normal");
             }
 
-            else if (_nivaa == "Normal")
+            else if (_level == "Normal")
             {
-                if (Poeng <= 5)
-                    _nivaa = Nivaa("Normal");
-                else if (Poeng > 5 && Poeng < 10)
-                    _nivaa = Nivaa("Normal");
-                else if (Poeng >= 10 && Poeng < 20)
-                    _nivaa = Nivaa("Ekspert");
+                if (_points <= 5)
+                    _level = Level("Normal");
+                else if (_points > 5 && _points < 10)
+                    _level = Level("Normal");
+                else if (_points >= 10 && _points < 20)
+                    _level = Level("Expert");
             }
-            else if (_nivaa == "Ekspert")
+            else if (_level == "Expert")
             {
-                if (Poeng <= 5)
-                    _nivaa = Nivaa("Ekspert");
-                else if (Poeng > 5 && Poeng < 10)
-                    _nivaa = Nivaa("Ekspert");
-                else if (Poeng >= 10 && Poeng < 20)
-                    _nivaa = Nivaa("Ekspert");
-                else if (Poeng > 20)
-                    _nivaa = Nivaa("Insane");
+                if (_points <= 5)
+                    _level = Level("Expert");
+                else if (_points > 5 && _points < 10)
+                    _level = Level("Expert");
+                else if (_points >= 10 && _points < 20)
+                    _level = Level("Ekspert");
+                else if (_points > 20)
+                    _level = Level("Expert");
             }
         }
 
-        private void EnemyTimer1Tick(object sender, EventArgs e)
+        private void CheckAndRemoveLifeMinusOne()
         {
-            _boat1.Top = 350;
-            _boat1.Left += _boat1Speed;
-
-            if (_boat1.Location.X >= 900)
-                _boat1.Left = new Random().Next(-900, -300);
-
-            if (_boat1.Location.X >= 1500)
-                _boat1.Left = 800;
-            if (_skudd.Location.Y == 0)
+            //Method to remove life if no HIT
+            if (_torpedo.Location.Y == 0)
             {
-                _liv--;
-                if (_liv == 0)
+                _life--;
+                if (_life == 0)
                 {
                     _boat1.Dispose();
                     _boat2.Dispose();
                     _player.Dispose();
                     _plane.Dispose();
-                    Form gameOverForm = new GameOverForm();
+                    
+                    //Opens game over and sends points as parameter
+                    Form gameOverForm = new GameOverForm(_points);
+                    _soundPlayer.Stop();
                     gameOverForm.ShowDialog();
                 }
             }
+        }
+
+        private void PlayBkMusic()
+        {
+            //Method to start backgroundmusic
+            _soundPlayer = new SoundPlayer(Resources.bkMusic);
+            _soundPlayer.PlayLooping();
+        }
 
 
-            if (!_skudd.Bounds.IntersectsWith(_boat1.Bounds))
+        private void NewTorpedo()
+        {
+            //Reload torpedo
+            _torpedo.Image = Resources.torpedo;
+            _torpedo.BackColor = Color.Transparent;
+            _torpedo.SetBounds(_player.Location.X + 35, 540, 9, 20);
+            Controls.Add(_torpedo);
+        }
+
+        public string Level(string skill)
+        {
+            //Method to change level
+
+            if (skill == "Noob")
+                return "Noob";
+            if (skill == "Normal")
             {
-                if (_skudd.Location.Y <= -200)
-                {
-                    _styring = true;
+                _boat1Speed += 2;
+                _boat2Speed += 4;
+                _planeSpeed += 4;
+                return "Normal";
+            }
 
-                    _skudd.SetBounds(_player.Location.X + 28, -350, 20, 20);
+            if (skill == "Expert")
+            {
+                _boat1Speed += 3;
+                _boat2Speed += 5;
+                _planeSpeed += 5;
+                return "Expert";
+            }
+            if (skill == "Insane")
+            {
+                _boat1Speed += 5;
+                _boat2Speed += 7;
+                _planeSpeed += 7;
+                return "Insane";
+            }
+            return "Noob";
+        }
+
+        private void EnemyTimer1Tick(object sender, EventArgs e)
+        {
+            //Boat movment timer
+            _boat1.Top = 350;
+            _boat1.Left += _boat1Speed;
+
+            //Moves boat to random location
+            if (_boat1.Location.X >= 900)
+                _boat1.Left = new Random().Next(-900, -300);
+
+            if (_boat1.Location.X >= 1500)
+                _boat1.Left = 800;
+
+            //Remove one life if torpedo moves passed Y=0
+            CheckAndRemoveLifeMinusOne();
+
+            //Moves torpedo back if no hit and turns control on
+            if (!_torpedo.Bounds.IntersectsWith(_boat1.Bounds))
+            {
+                if (_torpedo.Location.Y <= -200)
+                {
+                    _controlOnOff = true;
+
+                    _torpedo.SetBounds(_player.Location.X + 28, -350, 20, 20);
                 }
             }
+
+            //HIT -> Points + 1, moves boat out of view, moves torpedo out of view
             else
             {
                 _boat1.Left = 1500;
-                _skudd.Location = new Point(_skudd.Location.X, -150);
-                _styring = true;
-                Poeng++;
+                _torpedo.Location = new Point(_torpedo.Location.X, -150);
+                _controlOnOff = true;
+                _points++;
 
-                EndreNivaa();
+                // If HIT --> change level tester
+                ChangeLevel();
             }
 #if Debug
             Console.WriteLine("boat1 X: " + _boat1.Location.X);
@@ -204,35 +258,40 @@ namespace SubmarineGame
 
         private void EnemyTimer2Tick(object sender, EventArgs e)
         {
+            //Boat movment timer
             _boat2.Top = 290;
             _boat2.Left -= _boat2Speed;
 
-
+            //Moves boat to random location
             if (_boat2.Location.X <= -100)
                 _boat2.Left = new Random().Next(900, 1300);
 
-            if (!_skudd.Bounds.IntersectsWith(_boat2.Bounds))
+            //Moves torpedo back if no hit and turns control on
+            if (!_torpedo.Bounds.IntersectsWith(_boat2.Bounds))
             {
-                if (_skudd.Location.Y <= -200)
+                if (_torpedo.Location.Y <= -200)
                 {
-                    _styring = true;
-                    _skudd.SetBounds(_player.Location.X + 28, -350, 20, 20);
+                    _controlOnOff = true;
+                    _torpedo.SetBounds(_player.Location.X + 28, -350, 20, 20);
                 }
             }
 
+            //HIT -> Points + 1, moves boat out of view, moves torpedo out of view
             else
             {
                 _boat2.Left = 900;
-                _skudd.Location = new Point(_skudd.Location.X, -150);
-                _styring = true;
-                Poeng += 3;
-                EndreNivaa();
+                _torpedo.Location = new Point(_torpedo.Location.X, -150);
+                _controlOnOff = true;
+                _points += 3;
+
+                // If HIT --> change level tester
+                ChangeLevel();
             }
 
 #if Debug
             Console.WriteLine("boat2 X: " + _boat2.Location.X);
             Console.WriteLine("boat2 Y: " + _boat2.Location.Y);
-            Console.WriteLine("Skudd y: " + _skudd.Location.Y);
+            Console.WriteLine("torpedo y: " + _torpedo.Location.Y);
 #endif
             Refresh();
         }
@@ -240,34 +299,40 @@ namespace SubmarineGame
 
         private void planeTimer_Tick(object sender, EventArgs e)
         {
+            //Boat movment timer
             _plane.Top = 100;
             _plane.Left += _planeSpeed;
 #if Debug
             Console.WriteLine("Plane X: " + _plane.Location.X);
 #endif
+            //Moves plane to random location
             if (_plane.Location.X >= 900)
                 _plane.Left = new Random().Next(-1500, -300);
 
             if (_plane.Location.X >= 1500)
                 _plane.Left = 800;
 
-            if (!_skudd.Bounds.IntersectsWith(_plane.Bounds))
+            //Moves torpedo back if no hit and turns control on
+            if (!_torpedo.Bounds.IntersectsWith(_plane.Bounds))
             {
-                if (_skudd.Location.Y <= -200)
+                if (_torpedo.Location.Y <= -200)
                 {
-                    _styring = true;
+                    _controlOnOff = true;
 
-                    _skudd.SetBounds(_player.Location.X + 28, -350, 20, 20);
+                    _torpedo.SetBounds(_player.Location.X + 28, -350, 20, 20);
                 }
             }
+
+            //HIT -> Points + 1, moves boat out of view, moves torpedo out of view
             else
             {
                 _plane.Left = -1500;
-                _skudd.Location = new Point(_skudd.Location.X, -150);
-                _styring = true;
-                Poeng += 5;
+                _torpedo.Location = new Point(_torpedo.Location.X, -150);
+                _controlOnOff = true;
+                _points += 5;
 
-                EndreNivaa();
+                // If HIT --> change level tester
+                ChangeLevel();
             }
 #if Debug
             Console.WriteLine("boat1 X: " + _boat1.Location.X);
@@ -276,32 +341,27 @@ namespace SubmarineGame
             Refresh();
         }
 
-        private void playerTimer_Tick(object sender, EventArgs e)
-        {
-        }
-
         private void skuddTimer_Tick(object sender, EventArgs e)
         {
-            _styring = false;
-
-            _skudd.Location = new Point(_skudd.Location.X, _skudd.Location.Y - 30);
+            //Turns off control while torpedo is in motion
+            _controlOnOff = false;
+            _torpedo.Location = new Point(_torpedo.Location.X, _torpedo.Location.Y - 30);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (_styring)
+            //Enables keyboard control of submarine if _controlOnOff is true
+            if (_controlOnOff)
 
                 if (e.KeyCode == Keys.Left)
                 {
                     _player.Left -= 10;
-                    //skudd.Left -= 5;
 #if Debug
                     Console.WriteLine(_player.Left);
 #endif
                     if (_player.Left <= 0)
                     {
                         _player.Left = 10;
-                        //skudd.Left = 25;
 #if Debug
                         Console.WriteLine("Player: " + _player.Left);
 #endif
@@ -309,16 +369,15 @@ namespace SubmarineGame
                     else if (_player.Left >= 750)
                     {
                         _player.Left = 745;
-                        //skudd.Left = 765;
 #if Debug
                         Console.WriteLine("Player: " + _player.Left);
 #endif
                     }
                 }
+
                 else if (e.KeyCode == Keys.Right)
                 {
                     _player.Left += 10;
-                    //skudd.Left += 5;
 #if Debug
                     Console.WriteLine("Player: " + _player.Left);
 #endif
@@ -326,7 +385,7 @@ namespace SubmarineGame
                     if (_player.Left <= 0)
                     {
                         _player.Left = 10;
-                        //skudd.Left = 10;
+
 #if Debug
                         Console.WriteLine("Player: " + _player.Left);
 #endif
@@ -334,7 +393,6 @@ namespace SubmarineGame
                     else if (_player.Left >= 720)
                     {
                         _player.Left = 715;
-                        //skudd.Left = 765;
 #if Debug
                         Console.WriteLine("Player: " + _player.Left);
 #endif
@@ -342,71 +400,38 @@ namespace SubmarineGame
                 }
                 else if (e.KeyCode == Keys.Space)
                 {
-                    NyttSkudd();
-                    _styring = false;
+                    //Fires torpedo
+                    NewTorpedo();
+                    _controlOnOff = false;
                 }
         }
 
-
-        public string Nivaa(string skill)
-        {
-            if (skill == "Noob")
-                return "Noob";
-            if (skill == "Normal")
-            {
-                /*                Enemy1.Interval = 25;
-                                Enemy2.Interval = 15;*/
-                _boat1Speed += 2;
-                _boat2Speed += 4;
-                _planeSpeed += 4;
-                return "Normal";
-            }
-
-            if (skill == "Ekspert")
-            {
-                /*                Enemy1.Interval = 20;
-                                Enemy2.Interval = 10;*/
-                _boat1Speed += 3;
-                _boat2Speed += 5;
-                _planeSpeed += 5;
-                return "Ekspert";
-            }
-            if (skill == "Insane")
-            {
-                /*                Enemy1.Interval = 1;
-                                Enemy2.Interval = 1;*/
-                _boat1Speed += 5;
-                _boat2Speed += 7;
-                _planeSpeed += 7;
-                return "Insane";
-            }
-            return "Noob";
-        }
-
-
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            //Displays game information
             var dc = e.Graphics;
 
             var flags = TextFormatFlags.Left | TextFormatFlags.EndEllipsis;
             var font = new Font("Stencil", 12, FontStyle.Regular);
-            TextRenderer.DrawText(dc, "Poeng: " + Poeng + "\nLiv: " + _liv + "\nNivå: " + _nivaa, font,
+            TextRenderer.DrawText(dc, "Points: " + _points + "\nLives left: " + _life + "\nLevel: " + _level, font,
                 new Rectangle(5, 45, 200, 100), SystemColors.ControlText, flags);
+
+            //Debug: Torpedo location
 #if Debug
             TextRenderer.DrawText(dc,
-                "X=" + _cursX + ":" + "Y=" + _cursY + "\nSkudd X: " + _skudd.Location.X + "\nSkudd Y: " +
-                _skudd.Location.Y, font, new Rectangle(150, 45, 200, 100), SystemColors.ControlText, flags);
-
+                "X=" + _cursX + ":" + "Y=" + _cursY + "\nTorpedo X: " + _torpedo.Location.X + "\nTorpedo Y: " +
+                _torpedo.Location.Y, font, new Rectangle(150, 45, 200, 100), SystemColors.ControlText, flags);
 #endif
         }
 
-        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        private void NewGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Restart();
         }
 
         private void Form1_MouseMove(object sender, MouseEventArgs e)
         {
+            //Debug: Shows cursor location
 #if Debug
             _cursX = e.X;
             _cursY = e.Y;
@@ -414,22 +439,31 @@ namespace SubmarineGame
 #endif
         }
 
-        private void musicOnOffToolStripMenuItem_Click(object sender, EventArgs e)
+        private void MusicOnOffToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _mOffOnCount++;
+            //Toggels music On/Off
 
-            if (_mOffOnCount % 2 == 0)
-                sp.PlayLooping();
+            _musicOnOffCount++;
+
+            if (_musicOnOffCount % 2 == 0)
+                _soundPlayer.PlayLooping();
             else
-                sp.Stop();
+                _soundPlayer.Stop();
         }
 
+        private void ExitMenuItem1_Click(object sender, EventArgs e)
+        {
+            //Close menuitem
+            Close();
+        }
 
-#if Debug
-
-        private int _cursX;
-        private int _cursY;
-
-#endif
+        private void HighscordMenuItem1_Click(object sender, EventArgs e)
+        {
+            //Open highscore
+            using (Form highScore = new HighScoreForm())
+            {
+                highScore.ShowDialog();
+            }
+        }
     }
 }

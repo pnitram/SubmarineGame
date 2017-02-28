@@ -48,19 +48,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(352, 142);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(145, 32);
+            this.label1.Size = new System.Drawing.Size(159, 32);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Bra jobba!";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
+            this.label1.Text = "Good work!";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(197, 387);
+            this.label2.Location = new System.Drawing.Point(179, 387);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 32);
+            this.label2.Size = new System.Drawing.Size(98, 32);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Navn:";
+            this.label2.Text = "Name:";
             // 
             // button1
             // 
@@ -68,7 +67,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(301, 79);
             this.button1.TabIndex = 3;
-            this.button1.Text = "Lagre";
+            this.button1.Text = "Store highscore!";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -79,7 +78,6 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(0, 32);
             this.label3.TabIndex = 4;
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // GameOverForm
             // 
@@ -92,7 +90,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
             this.Name = "GameOverForm";
-            this.Text = "Ubåt - Game Over";
+            this.Text = "Game Over ";
             this.ResumeLayout(false);
             this.PerformLayout();
 
