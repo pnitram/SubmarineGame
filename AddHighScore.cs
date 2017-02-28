@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace SubmarineGame
 {
-    [Serializable()]
+    [Serializable]
     public class AddHighScore : IComparable
     {
         public string PlayerName { get; set; }
         public int Score { get; set; }
+
         public int CompareTo(object obj)
         {
-            AddHighScore otherScore = (AddHighScore)obj;
+            var otherScore = (AddHighScore) obj;
             if (Score == otherScore.Score)
                 return 0;
 
