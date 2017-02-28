@@ -18,7 +18,7 @@ namespace SubmarineGame
         {
             _points = points;
             InitializeComponent();
-            label3.Text = @"You recived: " + _points + @" point!";
+            label3.Text = @"You recived: " + _points + @" points!";
         }
 
         private void button1_Click(object sender, EventArgs e)
