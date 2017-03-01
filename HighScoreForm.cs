@@ -22,6 +22,9 @@ namespace SubmarineGame
         public HighScoreForm()
         {
             InitializeComponent();
+            var s = new Size(750, 400);
+            ClientSize = s;
+            FormBorderStyle = FormBorderStyle.FixedSingle;
 
             try
             {
@@ -68,9 +71,9 @@ namespace SubmarineGame
                 var font = new Font("Stencil", 12, FontStyle.Regular);
 
                 //Renders two highscore colums
-                TextRenderer.DrawText(dc, _scoresString1, font, new Rectangle(100, 60, 700, 350),
+                TextRenderer.DrawText(dc, _scoresString1, font, new Rectangle(50, 60, 700, 350),
                     SystemColors.ControlText, flags);
-                TextRenderer.DrawText(dc, _scoresString2, font, new Rectangle(300, 60, 700, 350),
+                TextRenderer.DrawText(dc, _scoresString2, font, new Rectangle(400, 60, 700, 350),
                     SystemColors.ControlText, flags);
             }
             catch (Exception exception)

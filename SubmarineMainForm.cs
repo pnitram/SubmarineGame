@@ -111,36 +111,16 @@ namespace SubmarineGame
         {
             //Change level method
 
-            if (_level == "Noob")
-
-            {
+            
                 if (_points <= 5)
                     _level = Level("Noob");
-                if (_points > 5)
+                else if (_points > 5 && _points <= 15)
                     _level = Level("Normal");
-            }
-
-            else if (_level == "Normal")
-            {
-                if (_points <= 5)
-                    _level = Level("Normal");
-                else if (_points > 5 && _points < 10)
-                    _level = Level("Normal");
-                else if (_points >= 10 && _points < 20)
+                else if (_points > 15 && _points <=25)
                     _level = Level("Expert");
-            }
-            else if (_level == "Expert")
-            {
-                if (_points <= 5)
-                    _level = Level("Expert");
-                else if (_points > 5 && _points < 10)
-                    _level = Level("Expert");
-                else if (_points >= 10 && _points < 20)
-                    _level = Level("Ekspert");
-                else if (_points > 20)
-                    _level = Level("Expert");
-            }
-        }
+                else if (_points > 25)
+                    _level = Level("Insane");
+               }
 
         private void CheckAndRemoveLifeMinusOne()
         {
@@ -279,6 +259,7 @@ namespace SubmarineGame
             //HIT -> Points + 1, moves boat out of view, moves torpedo out of view
             else
             {
+                
                 _boat2.Left = 900;
                 _torpedo.Location = new Point(_torpedo.Location.X, -150);
                 _controlOnOff = true;
